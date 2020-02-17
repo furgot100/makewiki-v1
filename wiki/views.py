@@ -2,6 +2,7 @@ from django.shortcuts import render
 from wiki.models import Page
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.http import HttpResponse, Http404
 
 
 class PageList(ListView):
@@ -12,11 +13,11 @@ class PageList(ListView):
       3. Replace pass below with the code to render a template named `list.html`.
     """
     model = Page
-
     def get(self, request):
         """ Returns a list of wiki pages. """
-        pass
-
+        wiki_list = Page.objects.all()
+        context = {'wiki_list': wiki_list}
+        return render(request,'list.html', context=context)
 
 class PageDetailView(DetailView):
     """
@@ -39,7 +40,11 @@ class PageDetailView(DetailView):
 
     def get(self, request, slug):
         """ Returns a specific of wiki page by slug. """
-        pass
+        try:
+          wiki = Page.objects.get(slug=slug)
+        except Page.DoesNotExist:
+          raise Http404("Page does not exist")
+        return render(request, 'page.html' , {'wiki' : wiki})
 
     def post(self, request, slug):
         pass

@@ -1,0 +1,14 @@
+<body>
+  {% block content %}
+    <h1>list</h1>
+    {% if wiki_list %}
+    <ul>
+    {% for wiki in wiki_list %}
+      <li><a href="{{ wiki.slug }}">{{ wiki.title }}</a></li>
+    {% endfor %}
+    </ul>
+    {% else %}
+      <p>No wikis</p>
+    {% endif %}
+  {% endblock %}
+</body>
